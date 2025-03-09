@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Age Calculator</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(to right, #ece9e6, #ffffff);
+        }
+        .container {
+            background: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 400px;
+        }
+        h2 {
+            color: #4A4A4A;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        input[type="date"], button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #5A54F9;
+            color: white;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        button:hover {
+            background-color: #4642d8;
+        }
+        #custom-date-container {
+            display: none;
+        }
+        .result-box {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+        .result-item {
+            background: #F7F7FF;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            width: 80px;
+            font-weight: bold;
+        }
+        .years {
+            color: #5A54F9;
+        }
+        .months {
+            color: #A084E8;
+        }
+        .days {
+            color: #F9627D;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>
+            <span>&#128197;</span> Age Calculator
+        </h2>
+        <input type="checkbox" id="toggle-custom-date" onclick="toggleCustomDate()">
+        <label for="toggle-custom-date"> Calculate between two custom dates</label>
+        <br>
+        <label for="dob">Birth date</label>
+        <input type="date" id="dob">
+        <div id="custom-date-container">
+            <label for="custom-date">Custom Date</label>
+            <input type="date" id="custom-date">
+        </div>
+        <button onclick="calculateAge()">&#9201; Calculate Age</button>
+        <h3>Your age is:</h3>
+        <div class="result-box">
+            <div class="result-item years" id="years">0 <br> Years</div>
+            <div class="result-item months" id="months">0 <br> Months</div>
+            <div class="result-item days" id="days">0 <br> Days</div>
+        </div>
+    </div>
+    
+    <script>
+        function toggleCustomDate() {
+            let customDateContainer = document.getElementById("custom-date-container");
+            let toggleCheckbox = document.getElementById("toggle-custom-date");
+            customDateContainer.style.display = toggleCheckbox.checked ? "block" : "none";
+        }
+        
+        function calculateAge() {
+            let dob = document.getElementById("dob").value;
+            let useCustomDate = document.getElementById("toggle-custom-date").checked;
+            let customDateInput = document.getElementById("custom-date").value;
+            
+            if (!dob) {
+                alert("Please enter a valid date of birth.");
+                return;
+            }
+            
+            let dobDate = new Date(dob);
+            let today = useCustomDate && customDateInput ? new Date(customDateInput) : new Date();
+            
+            let ageYears = today.getFullYear() - dobDate.getFullYear();
+            let ageMonths = today.getMonth() - dobDate.getMonth();
+            let ageDays = today.getDate() - dobDate.getDate();
+            
+            if (ageDays < 0) {
+                ageMonths--;
+                let prevMonth = new Date(today.getFullYear(), today.getMonth(), 0);
+                ageDays += prevMonth.getDate();
+            }
+            
+            if (ageMonths < 0) {
+                ageYears--;
+                ageMonths += 12;
+            }
+            
+            document.getElementById("years").innerHTML = `<strong>${ageYears}</strong> <br> Years`;
+            document.getElementById("months").innerHTML = `<strong>${ageMonths}</strong> <br> Months`;
+            document.getElementById("days").innerHTML = `<strong>${ageDays}</strong> <br> Days`;
+        }
+    </script>
+</body>
+</html>
